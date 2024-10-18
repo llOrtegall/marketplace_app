@@ -1,3 +1,5 @@
+import { authOptions } from './api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 import Header from '@/components/Header';
 import localFont from 'next/font/local';
 import type { Metadata } from 'next';
@@ -19,11 +21,13 @@ export const metadata: Metadata = {
   description: 'A marketplace app built with Next.js',
 };
 
-export default function RootLayout({ children }: Readonly<{  children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{  children: React.ReactNode }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
-        <Header />
+        <Header session={session}/>
         {children}
       </body>
     </html>
