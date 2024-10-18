@@ -3,7 +3,8 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from 'next-auth';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Header({ session }: { session: Session | null }) {
@@ -13,10 +14,10 @@ export default function Header({ session }: { session: Session | null }) {
         Markeplace
       </Link>
       <nav className='flex gap-2 *:rounded  *:py-1'>
-        <button className='border border-blue-600 text-blue-600 inline-flex items-center gap-1 px-2'>
+        <Link href='/new' className='border border-blue-600 text-blue-600 inline-flex items-center gap-1 px-2'>
           <FontAwesomeIcon icon={faPlus} className='h-4' />
           <span>Post a add</span>
-        </button>
+        </Link>
         <span className='border-r-2 text-gray-300 text-xl'></span>
         {!session?.user && (
           <>
@@ -27,6 +28,16 @@ export default function Header({ session }: { session: Session | null }) {
             </button>
           </>
         )}
+        {
+          session?.user && (
+            <>
+              <Link href='/account'>
+              </Link>
+              <Image style={{borderRadius: '8px'}} src={session.user.image!} alt={'avatar user'} width={30} height={30} />
+              <button onClick={() => signOut()} className='px-4 border-0 text-gray-600'>LogOut</button>
+            </>
+          )
+        }
 
       </nav>
     </header>
